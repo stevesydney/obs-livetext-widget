@@ -1,0 +1,9 @@
+{
+    "name": "obs-live-text-widget",
+    "version": "0.0.1",
+    "description": "HTML text widget for OBS with live update dashboard",
+    "dependencies": {
+        "express": "^4.18.2",
+        "socket.io": "^4.5.3"
+    }
+}

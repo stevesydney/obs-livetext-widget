@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="obs-width" content="700">
+    <meta name="obs-height" content="300">
+    <meta name="obs-fps" content="60">
+    <meta name="obs-shutdown" content="true">
+    <meta name="obs-refresh" content="true">
+    
+    <meta name="obs-browser" content="width=700,height=300,fps=60,shutdown=true,refresh=true">
+    <title>Document</title>
+    <style>
+        :root,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Soin Sans Pro';
+            background-color: transparent;
+            font-size: 36px;
+        }
+
+        h1,h2,h3,h4 {
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1 {
+            font-weight: 500;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            line-height: 1.2em;
+        }
+
+        h2 {
+            font-weight: 400;
+            font-size: 0.93rem;
+            margin-bottom: 16px;
+            line-height: 1.2em;
+        }
+
+        h3 {
+            font-weight: 400;
+            font-size: 0.64rem;
+            line-height: 1.2em;
+            opacity: 0.9;
+        }
+
+        h4 {
+            font-weight: 400;
+            font-size: 0.64rem;
+            line-height: 1.2em;
+            opacity: 0.9;
+        }
+
+        #live_text {
+            width: 700px;
+            height: 300px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="live_text">
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        var liveTextContainer = document.getElementById('live_text');
+
+        socket.on("connect", () => {
+        console.log(socket.id);
+        });
+
+        socket.on('live text', function(liveText) {
+            liveTextContainer.innerHTML = '';
+            if (liveText.hasOwnProperty('h1') && liveText['h1']) {
+                var header1 = document.createElement('h1');
+                header1.textContent = liveText.h1;
+                liveTextContainer.appendChild(header1);
+            }
+            if (liveText.hasOwnProperty('h2') && liveText['h2']) {
+                var header2 = document.createElement('h2');
+                header2.textContent = liveText.h2;
+                liveTextContainer.appendChild(header2);
+            }
+            if (liveText.hasOwnProperty('h3') && liveText['h3']) {
+                var header3 = document.createElement('h3');
+                header3.textContent = liveText.h3;
+                liveTextContainer.appendChild(header3);
+            }
+            if (liveText.hasOwnProperty('h4') && liveText['h4']) {
+                var header4 = document.createElement('h4');
+                header4.textContent = liveText.h4;
+                liveTextContainer.appendChild(header4);
+            }
+        });
+    </script>
+</body>
+</html>
