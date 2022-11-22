@@ -22,7 +22,7 @@
             font-size: 36px;
         }
 
-        h1,h2,h3,h4 {
+        h1,h2,h3,h4,h5 {
             margin: 0;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -54,18 +54,45 @@
             font-size: 0.64rem;
             line-height: 1.2em;
             opacity: 0.9;
+            margin-bottom: 16px;
+        }
+        h5 {
+            font-weight: 400;
+            font-size: 0.5rem;
+            line-height: 1.2em;
+            opacity: 0.9;
+        }
+
+        #container {
+            background-color: #111;
+            display: flex;
+            justify-content: space-between;
+            width: 700px;
+            height: 300px;
         }
 
         #live_text {
-            width: 700px;
+            min-width: 460px;
+            max-width: 800px;
             height: 300px;
             color: #fff;
+        }
+
+        #live_image img {
+            width: 200px;
+            height: auto;
+            border-radius: 13px;
         }
     </style>
 </head>
 <body>
-    <div id="live_text">
+    <div id="container">
+        <div id="live_text">
 
+        </div>
+        <div id="live_image">
+        
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -73,13 +100,11 @@
         var socket = io();
 
         var liveTextContainer = document.getElementById('live_text');
-
-        socket.on("connect", () => {
-        console.log(socket.id);
-        });
+        var liveImageContainer = document.getElementById('live_image');
 
         socket.on('live text', function(liveText) {
             liveTextContainer.innerHTML = '';
+            liveImageContainer.innerHTML = '';
             if (liveText.hasOwnProperty('h1') && liveText['h1']) {
                 var header1 = document.createElement('h1');
                 header1.textContent = liveText.h1;
@@ -99,6 +124,16 @@
                 var header4 = document.createElement('h4');
                 header4.textContent = liveText.h4;
                 liveTextContainer.appendChild(header4);
+            }
+            if (liveText.hasOwnProperty('h5') && liveText['h5']) {
+                var header5 = document.createElement('h5');
+                header5.textContent = liveText.h5;
+                liveTextContainer.appendChild(header5);
+            }
+            if (liveText.hasOwnProperty('image_src') && liveText['image_src']) {
+                var image = document.createElement('img');
+                image.src = liveText.image_src;
+                liveImageContainer.appendChild(image);
             }
         });
     </script>

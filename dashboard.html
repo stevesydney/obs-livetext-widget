@@ -24,19 +24,53 @@
     <li>
         <label for="header4">Header 4</label>
         <textarea id="header4"></textarea>
-    </li>    
+    </li> 
+    <li>
+        <label for="header5">Header 5</label>
+        <textarea id="header5"></textarea>
+    </li>
+    <li>
+        <label for="image_upload">Image upload</label>
+        <input id="image_upload" type="file">
+        <button type="button" id="image_clear_button">clear</button>
+    </li>
     </ol>
-        <button>Send</button>
+        <button type="submit">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
+
+        var reader = new FileReader();
+        reader.onload = handleFileRead;
 
         var form = document.getElementById('form');
         var h1 = document.getElementById('header1');
         var h2 = document.getElementById('header2');
         var h3 = document.getElementById('header3');
         var h4 = document.getElementById('header4');
+        var h5 = document.getElementById('header5');
+        var image_clear_button = document.getElementById('image_clear_button');
+        var image_upload = document.getElementById('image_upload');
+        var image_src;
+
+        image_upload.addEventListener('change', handleFileUpload, false);
+
+        image_clear_button.addEventListener('click', (e) => {
+            e.preventDefault();
+            image_upload.value = '';
+            image_src = undefined;
+        })
+
+        function handleFileRead(event) {
+            image_src = event.target.result;
+        }
+
+        function handleFileUpload(event) {
+            var file = event.target.files[0];
+            reader.readAsDataURL(file);
+        }
+
         
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -44,10 +78,13 @@
                 'h1' : h1.value,
                 'h2' : h2.value,
                 'h3' : h3.value,
-                'h4' : h4.value
+                'h4' : h4.value,
+                'h5' : h5.value,
+                'image_src' : image_src
             };
             socket.emit('live text', liveText);            
         });
+
     </script>
 </body>
 </html>
